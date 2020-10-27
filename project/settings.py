@@ -25,13 +25,16 @@ TEMPLATE_DIR = BASE_DIR / 'templates'
 import os
 SECRET_KEY = os.environ.get('DJANGO_SECRET_KEY', '%1ig-j(+72b52o=i35r#=ddvb(rp_c-nx+y6)2-&)ridtfb$(*')
 
-export DJANGO_DEBUG=False
+
+# SECURITY WARNING: don't run with debug turned on in production!
+#DEBUG = True
+
 
 # SECURITY WARNING: don't run with debug turned on in production!
 # DEBUG = True
-DEBUG = os.environ.get('DJANGO_DEBUG', '') != 'False'
+DEBUG = False
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ['<main_app>.herokuapp.com', '127.0.0.1']
 
 
 # Application definition
@@ -48,6 +51,7 @@ INSTALLED_APPS = [
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
+    #'whitenoise.middleware.WhiteNoiseMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.common.CommonMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',
@@ -125,3 +129,26 @@ USE_TZ = True
 # https://docs.djangoproject.com/en/3.1/howto/static-files/
 
 STATIC_URL = '/static/'
+# python manage.py runserver
+
+# Heroku: Update database configuration from $DATABASE_URL.
+# import dj_database_url
+# db_from_env = dj_database_url.config(conn_max_age=500)
+# DATABASES['default'].update(db_from_env)
+
+if 'DATABASE_URL' in os.environ:
+    DATABASES = {
+        'default': dj_database_url.parse(os.environ.get('DATABASE_URL'))
+    }
+else:
+    print("Postgres URL not found, using sqlite instead")
+    DATABASES = {
+        'default': {
+            'ENGINE': 'django.db.backends.sqlite3',
+            'NAME': os.path.join(BASE_DIR, 'db.sqlite3'),
+        }
+    }
+
+# Simplified static file serving.
+# https://warehouse.python.org/project/whitenoise/
+STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
