@@ -134,21 +134,10 @@ STATIC_URL = '/static/'
 
 # Heroku: Update database configuration from $DATABASE_URL.
 import dj_database_url
-db_from_env = dj_database_url.config(conn_max_age=500)
-DATABASES['default'].update(db_from_env)
 
-# if 'DATABASE_URL' in os.environ:
-    # DATABASES = {
-        # 'default': dj_database_url.parse(os.environ.get('DATABASE_URL'))
-    # }
-# else:
-    # print("Postgres URL not found, using sqlite instead")
-    # DATABASES = {
-        # 'default': {
-            # 'ENGINE': 'django.db.backends.sqlite3',
-            # 'NAME': os.path.join(BASE_DIR, 'db.sqlite3'),
-        # }
-    # }
+DATABASES['default'] = dj_database_url.config(conn_max_age=600, ssl_require=True)
+
+
 
 # Simplified static file serving.
 # https://warehouse.python.org/project/whitenoise/
