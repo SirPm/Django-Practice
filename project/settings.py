@@ -34,7 +34,7 @@ SECRET_KEY = os.environ.get('DJANGO_SECRET_KEY', '%1ig-j(+72b52o=i35r#=ddvb(rp_c
 # DEBUG = True
 DEBUG = False
 
-ALLOWED_HOSTS = ['<main_app>.herokuapp.com', '127.0.0.1']
+ALLOWED_HOSTS = ['djantaskform.herokuapp.com', '127.0.0.1']
 
 
 # Application definition
